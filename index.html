@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>JB | FAIZ STORE - Toko Akun Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #0a0e27;
+            color: #ffffff;
+        }
+
+        /* Sidebar Menu Kanan */
+        .sidebar-right {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: #0f1235;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            transition: 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-right.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            padding: 25px;
+            text-align: center;
+            border-bottom: 1px solid #1e2268;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .sidebar-menu li {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-right: 3px solid transparent;
+        }
+
+        .sidebar-menu li:hover {
+            background: #1a1e55;
+            border-right-color: #00d4ff;
+        }
+
+        .sidebar-menu li i {
+            margin-right: 12px;
+            width: 25px;
+        }
+
+        .menu-toggle-right {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: #0f1235;
+            border: none;
+            color: white;
+            font-size: 24px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .overlay-right {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay-right.active {
+            display: block;
+        }
+
+        /* Header */
+        .store-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #0f1235;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-area img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .logo-area h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #fff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Main Content */
+        .main-store {
+            margin-right: 0;
+            padding: 80px 30px 30px;
+            transition: 0.3s;
+        }
+
+        .page-store {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .page-store.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: #13173f;
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #1e2268;
+            transition: 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: #00d4ff;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-card h3 {
+            margin: 12px 0;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        .stock {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .btn-buy {
+            background: #00d4ff;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .btn-buy:hover {
+            background: #00b8e6;
+        }
+
+        /* Form */
+        .form-card {
+            background: #13173f;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            background: #0a0e27;
+            border: 1px solid #1e2268;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #00d4ff;
+            color: #0a0e27;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background: #00b8e6;
+        }
+
+        .payment-option {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .payment-btn {
+            background: #1e2268;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .payment-btn:hover {
+            background: #2a2f80;
+        }
+
+        .payment-btn.selected {
+            background: #00d4ff;
+            color: #0a0e27;
+            border: 2px solid #fff;
+        }
+
+        .timer {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff4444;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 2000;
+            display: none;
+            font-weight: bold;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: #13173f;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #00d4ff;
+        }
+
+        .payment-detail-box {
+            background: #0a0e27;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .qris-image {
+            width: 200px;
+            border-radius: 15px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .dana-info {
+            font-size: 1.1rem;
+            background: #1e2268;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .logout-btn:hover {
+            background: #bb2d3b;
+        }
+
+        .btn-secondary {
+            background: #555;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            background: #666;
+        }
+
+        .btn-success {
+            background: #28a745;
+            width: 100%;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .saldo-info {
+            background: #1e2268;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .payment-method-saldo {
+            background: #28a745;
+            color: white;
+        }
+
+        .payment-method-saldo:hover {
+            background: #218838;
+        }
+
+        /* Channel Card Style */
+        .channel-card {
+            background: linear-gradient(135deg, #075E54, #128C7E);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .channel-card i {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+        .channel-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        .btn-channel {
+            background: white;
+            color: #075E54;
+            margin-top: 20px;
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn-channel:hover {
+            background: #f0f0f0;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+
+<button class="menu-toggle-right" id="menuToggleRight"><i class="fas fa-bars"></i></button>
+
+<div class="sidebar-right" id="sidebarRight">
+    <div class="sidebar-header">
+        <h3><i class="fas fa-store"></i> JB | FAIZ STORE</h3>
+    </div>
+    <ul class="sidebar-menu">
+        <li onclick="showPage('beranda')"><i class="fas fa-home"></i> Halaman Beranda</li>
+        <li onclick="showPage('stokAkun')"><i class="fas fa-box"></i> Stok Akun</li>
+        <li onclick="showPage('topupSaldo')"><i class="fas fa-wallet"></i> Top Up Saldo</li>
+        <li onclick="showPage('cekTransaksi')"><i class="fas fa-search"></i> Cek Transaksi</li>
+        <li onclick="showPage('pesanan')"><i class="fas fa-shopping-cart"></i> Pesanan</li>
+        <li onclick="showPage('profil')"><i class="fas fa-user"></i> Profil</li>
+        <li onclick="showPage('testimoni')"><i class="fas fa-star"></i> Testimoni</li>
+        <li onclick="showPage('saluran')"><i class="fab fa-whatsapp"></i> Saluran WhatsApp</li>
+    </ul>
+</div>
+
+<div class="overlay-right" id="overlayRight"></div>
+
+<div class="store-header">
+    <div class="logo-area">
+        <img src="https://cdn.phototourl.com/free/2026-06-07-94d3e77c-4064-4897-a5f0-f2bef6cd2962.jpg" alt="Logo">
+        <h1>JB | FAIZ STORE</h1>
+    </div>
+</div>
+
+<div class="main-store" id="mainStore">
+    <!-- Halaman Beranda -->
+    <div id="beranda" class="page-store active-page">
+        <div class="form-card" id="loginSection">
+            <h2><i class="fas fa-sign-in-alt"></i> Login / Daftar</h2>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="loginUsername" placeholder="Buat username untuk memulai">
+            </div>
+            <button id="btnLogin"><i class="fas fa-user-check"></i> Mulai Belanja</button>
+        </div>
+        <div class="form-card" id="welcomeSection" style="display:none;">
+            <h2>Selamat Datang, <span id="welcomeUser"></span>! 🎉</h2>
+            <p>Saldo Anda: <strong id="userSaldoDisplay">Rp 0</strong></p>
+        </div>
+        <div class="product-grid" id="homeProducts"></div>
+    </div>
+
+    <!-- Stok Akun -->
+    <div id="stokAkun" class="page-store">
+        <h2>📦 Stok Akun Tersedia</h2>
+        <div class="product-grid" id="stokAkunGrid"></div>
+    </div>
+
+    <!-- Top Up Saldo -->
+    <div id="topupSaldo" class="page-store">
+        <div class="form-card">
+            <h2>💎 Top Up Saldo</h2>
+            <div class="form-group">
+                <label>Pilih Nominal</label>
+                <select id="nominalTopup">
+                    <option value="500">Rp 500</option>
+                    <option value="1000">Rp 1.000</option>
+                    <option value="5000">Rp 5.000</option>
+                    <option value="10000">Rp 10.000</option>
+                    <option value="25000">Rp 25.000</option>
+                    <option value="50000">Rp 50.000</option>
+                    <option value="100000">Rp 100.000</option>
+                    <option value="200000">Rp 200.000</option>
+                    <option value="500000">Rp 500.000</option>
+                </select>
+            </div>
+            <button id="btnTopUp"><i class="fas fa-credit-card"></i> Top Up Sekarang</button>
+        </div>
+    </div>
+
+    <!-- Cek Transaksi -->
+    <div id="cekTransaksi" class="page-store">
+        <div class="form-card">
+            <h2>🔍 Cek Transaksi</h2>
+            <div class="form-group">
+                <label>Masukkan Order ID</label>
+                <input type="text" id="cekOrderId" placeholder="ORDER-xxxxxx">
+            </div>
+            <button id="btnCekTransaksi">Cek Transaksi</button>
+            <div id="hasilCekTransaksi" style="margin-top:20px;"></div>
+        </div>
+    </div>
+
+    <!-- Pesanan -->
+    <div id="pesanan" class="page-store">
+        <div class="form-card">
+            <h2>📋 Pesanan Saya</h2>
+            <div id="pesananList"></div>
+        </div>
+    </div>
+
+    <!-- Profil -->
+    <div id="profil" class="page-store">
+        <div class="form-card">
+            <h2>👤 Profil Saya</h2>
+            <p>Username: <strong id="profileUsername"></strong></p>
+            <p>Saldo: <strong id="profileSaldo"></strong></p>
+            <p>Nama Lengkap: <strong id="profileNama"></strong></p>
+            <p>WhatsApp: <strong id="profileWa"></strong></p>
+            <p>Email: <strong id="profileEmail"></strong></p>
+            <button id="btnLogout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+
+    <!-- Testimoni -->
+    <div id="testimoni" class="page-store">
+        <div class="form-card">
+            <h2>⭐ Berikan Testimoni</h2>
+            <div class="form-group">
+                <label>Rating (1-5)</label>
+                <select id="ratingTesti">
+                    <option value="5">★★★★★ (5)</option>
+                    <option value="4">★★★★☆ (4)</option>
+                    <option value="3">★★★☆☆ (3)</option>
+                    <option value="2">★★☆☆☆ (2)</option>
+                    <option value="1">★☆☆☆☆ (1)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Pesan</label>
+                <textarea id="pesanTesti" rows="3" placeholder="Tulis pengalaman Anda..."></textarea>
+            </div>
+            <button id="btnKirimTestimoni"><i class="fas fa-paper-plane"></i> Kirim Testimoni</button>
+        </div>
+        <div class="form-card">
+            <h3>📝 Testimoni Customer</h3>
+            <div id="testimoniTampilan"></div>
+        </div>
+    </div>
+
+    <!-- HALAMAN SALURAN WHATSAPP (BARU) -->
+    <div id="saluran" class="page-store">
+        <div class="channel-card">
+            <i class="fab fa-whatsapp"></i>
+            <h3>Saluran WhatsApp JB FAIZ STORE</h3>
+            <p>Bergabunglah dengan saluran WhatsApp kami untuk mendapatkan:</p>
+            <p>✨ Info promo terbaru</p>
+            <p>📢 Pengumuman stok akun</p>
+            <p>🎁 Event & giveaway menarik</p>
+            <a href="https://whatsapp.com/channel/0029VbCuNZQ7DAX1JLFYPt3A" target="_blank" class="btn-channel">
+                <i class="fab fa-whatsapp"></i> Gabung Sekarang
+            </a>
+        </div>
+        <div class="form-card">
+            <h3><i class="fas fa-info-circle"></i> Tentang Saluran Kami</h3>
+            <p>Saluran WhatsApp resmi JB FAIZ STORE memberikan update tercepat seputar:</p>
+            <ul style="margin-top: 15px; margin-left: 20px;">
+                <li>✅ Stok akun game terbaru</li>
+                <li>✅ Harga spesial & diskon</li>
+                <li>✅ Informasi top up saldo</li>
+                <li>✅ Tips & trik seputar game</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Jangan sampai ketinggalan info penting!</strong> Klik tombol di atas untuk bergabung.</p>
+        </div>
+    </div>
+</div>
+
+<div id="toastMsg" class="toast"></div>
+
+<script>
+// ==================== DATA STORAGE ====================
+let currentUser = localStorage.getItem('faiz_current_user') || null;
+let products = JSON.parse(localStorage.getItem('faiz_products')) || [];
+let transactions = JSON.parse(localStorage.getItem('faiz_transactions')) || [];
+let testimonials = JSON.parse(localStorage.getItem('faiz_testimonials')) || [];
+let userBalances = JSON.parse(localStorage.getItem('faiz_balances')) || {};
+let userData = JSON.parse(localStorage.getItem('faiz_user_data')) || {};
+
+// Default products if empty
+if(products.length === 0) {
+    products = [
+        { id: 1, nama: "Mobile Legends Diamond 100", gambar: "https://via.placeholder.com/200", deskripsi: "Top up 100 diamond + bonus akun epic", harga: 25000, stok: 10 },
+        { id: 2, nama: "Free Fire Account M500", gambar: "https://via.placeholder.com/200", deskripsi: "Akun level 50, skin eksklusif", harga: 45000, stok: 5 },
+        { id: 3, nama: "PUBG Mobile Royale Pass", gambar: "https://via.placeholder.com/200", deskripsi: "Akun UC 600 + RP season", harga: 60000, stok: 8 },
+        { id: 4, nama: "Genshin Impact AR 45", gambar: "https://via.placeholder.com/200", deskripsi: "5 chara langka + primogem", harga: 120000, stok: 3 }
+    ];
+    localStorage.setItem('faiz_products', JSON.stringify(products));
+}
+
+function saveAll() {
+    localStorage.setItem('faiz_products', JSON.stringify(products));
+    localStorage.setItem('faiz_transactions', JSON.stringify(transactions));
+    localStorage.setItem('faiz_testimonials', JSON.stringify(testimonials));
+    localStorage.setItem('faiz_balances', JSON.stringify(userBalances));
+    localStorage.setItem('faiz_user_data', JSON.stringify(userData));
+}
+
+function showToast(msg, isError = false) {
+    let toast = document.getElementById('toastMsg');
+    toast.style.backgroundColor = isError ? '#dc3545' : '#28a745';
+    toast.innerHTML = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+}
+
+// ==================== LOGIN / LOGOUT ====================
+function loginOrRegister() {
+    let username = document.getElementById('loginUsername').value.trim();
+    if(!username) {
+        alert('Masukkan username!');
+        return;
+    }
+    currentUser = username;
+    localStorage.setItem('faiz_current_user', currentUser);
+    if(!userBalances[currentUser]) userBalances[currentUser] = 0;
+    if(!userData[currentUser]) userData[currentUser] = {};
+    saveAll();
+    updateUI();
+    showToast(`Selamat datang ${currentUser}!`);
+    showPage('beranda');
+    renderHomeProducts();
+    renderStokAkun();
+    renderPesanan();
+}
+
+function logout() {
+    currentUser = null;
+    localStorage.removeItem('faiz_current_user');
+    updateUI();
+    showToast('Anda telah logout');
+    showPage('beranda');
+    renderHomeProducts();
+    renderStokAkun();
+}
+
+function updateUI() {
+    let loginSec = document.getElementById('loginSection');
+    let welcomeSec = document.getElementById('welcomeSection');
+    if(currentUser) {
+        loginSec.style.display = 'none';
+        welcomeSec.style.display = 'block';
+        document.getElementById('welcomeUser').innerText = currentUser;
+        document.getElementById('userSaldoDisplay').innerText = 'Rp ' + (userBalances[currentUser] || 0).toLocaleString();
+        document.getElementById('profileUsername').innerText = currentUser;
+        document.getElementById('profileSaldo').innerText = 'Rp ' + (userBalances[currentUser] || 0).toLocaleString();
+        document.getElementById('profileNama').innerText = userData[currentUser]?.nama || 'Belum diisi';
+        document.getElementById('profileWa').innerText = userData[currentUser]?.wa || 'Belum diisi';
+        document.getElementById('profileEmail').innerText = userData[currentUser]?.email || 'Belum diisi';
+    } else {
+        loginSec.style.display = 'block';
+        welcomeSec.style.display = 'none';
+    }
+}
+
+// ==================== MODAL DATA DIRI ====================
+let pendingAction = null;
+let pendingProductId = null;
+let pendingAmount = 0;
+
+function showDataDiriModal(action, productId = null, amount = 0) {
+    if(!currentUser) {
+        showToast('Silakan login terlebih dahulu!', true);
+        return;
+    }
+    
+    pendingAction = action;
+    pendingProductId = productId;
+    pendingAmount = amount;
+    
+    let existingData = userData[currentUser] || {};
+    
+    let modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'dataDiriModal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3><i class="fas fa-user-edit"></i> Isi Data Diri</h3>
+            <div class="form-group">
+                <label>Nama Lengkap Anda</label>
+                <input type="text" id="inputNama" placeholder="Contoh: Ahmad Faiz" value="${existingData.nama || ''}">
+            </div>
+            <div class="form-group">
+                <label>Nomor WhatsApp Aktif</label>
+                <input type="tel" id="inputWa" placeholder="Contoh: 08123456789" value="${existingData.wa || ''}">
+            </div>
+            <div class="form-group">
+                <label>Email Aktif</label>
+                <input type="email" id="inputEmail" placeholder="Contoh: email@gmail.com" value="${existingData.email || ''}">
+            </div>
+            <button id="btnSimpanData" style="width:100%;"><i class="fas fa-save"></i> Simpan & Lanjutkan</button>
+            <button id="btnBatalData" style="width:100%; margin-top:10px; background:#555;"><i class="fas fa-times"></i> Batal</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('btnSimpanData').onclick = saveDataDiri;
+    document.getElementById('btnBatalData').onclick = closeDataDiriModal;
+}
+
+function closeDataDiriModal() {
+    let modal = document.getElementById('dataDiriModal');
+    if(modal) modal.remove();
+    pendingAction = null;
+    pendingProductId = null;
+    pendingAmount = 0;
+}
+
+function saveDataDiri() {
+    let nama = document.getElementById('inputNama').value.trim();
+    let wa = document.getElementById('inputWa').value.trim();
+    let email = document.getElementById('inputEmail').value.trim();
+    
+    if(!nama || !wa || !email) {
+        alert('Semua data harus diisi!');
+        return;
+    }
+    
+    userData[currentUser] = { nama: nama, wa: wa, email: email };
+    saveAll();
+    closeDataDiriModal();
+    
+    if(pendingAction === 'topup') {
+        showPaymentModal('topup', null, pendingAmount);
+    } else if(pendingAction === 'beli' && pendingProductId) {
+        showPaymentModal('beli', pendingProductId, 0);
+    }
+}
+
+// ==================== BELI DENGAN SALDO ====================
+function beliDenganSaldo(productId) {
+    let product = products.find(p => p.id == productId);
+    if(!product) {
+        showToast('Produk tidak ditemukan!', true);
+        return;
+    }
+    
+    let userSaldo = userBalances[currentUser] || 0;
+    
+    if(userSaldo >= product.harga) {
+        if(product.stok <= 0) {
+            showToast('Stok habis!', true);
+            return;
+        }
+        
+        userBalances[currentUser] -= product.harga;
+        product.stok -= 1;
+        
+        let orderId = 'ORDER-' + Date.now() + '-' + Math.floor(Math.random()*1000);
+        
+        let newTransaction = {
+            orderId: orderId,
+            username: currentUser,
+            productName: product.nama,
+            price: product.harga,
+            status: 'SUCCESS',
+            date: new Date().toLocaleString(),
+            accountDetail: `Akun ${product.nama} telah dikirim. Hubungi admin untuk detail lengkap. Pembayaran via SALDO WEBSITE`,
+            buyerNama: userData[currentUser]?.nama || '-',
+            buyerWa: userData[currentUser]?.wa || '-',
+            buyerEmail: userData[currentUser]?.email || '-',
+            paymentMethod: 'SALDO'
+        };
+        transactions.push(newTransaction);
+        saveAll();
+        
+        let waMsg = `Halo Admin, saya ${userData[currentUser]?.nama || currentUser} 
+(WA: ${userData[currentUser]?.wa || '-'}, Email: ${userData[currentUser]?.email || '-'}) 
+telah membeli ${product.nama} seharga Rp ${product.harga.toLocaleString()} 
+via SALDO WEBSITE. 
+Order ID: ${orderId}
+Mohon segera kirimkan akunnya.`;
+        window.open(`https://wa.me/6285178915068?text=${encodeURIComponent(waMsg)}`, '_blank');
+        
+        showToast(`✅ Pembelian ${product.nama} berhasil! Order ID: ${orderId}`);
+        renderStokAkun();
+        renderHomeProducts();
+        renderPesanan();
+        updateUI();
+        
+    } else {
+        let kurang = product.harga - userSaldo;
+        let confirmTopup = confirm(`⚠️ Saldo Anda tidak cukup! Kurang Rp ${kurang.toLocaleString()}. Apakah Anda ingin Top Up saldo sekarang?`);
+        if(confirmTopup) {
+            showPage('topupSaldo');
+        }
+    }
+}
+
+// ==================== MODAL PAYMENT ====================
+let selectedMethod = null;
+let timerIntervalPayment = null;
+let timeLeftPayment = 60;
+let currentPaymentType = null;
+let currentProductId = null;
+let currentAmount = 0;
+
+function showPaymentModal(type, productId, amount) {
+    currentPaymentType = type;
+    currentProductId = productId;
+    
+    if(type === 'topup') {
+        currentAmount = amount;
+    } else if(type === 'beli' && productId) {
+        let product = products.find(p => p.id == productId);
+        if(product) currentAmount = product.harga;
+    }
+    
+    let modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'paymentModal';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:500px;">
+            <h3>💳 Pilih Metode Pembayaran</h3>
+            <p style="margin-bottom:15px;">⏰ Anda memiliki waktu <strong style="color:#00d4ff;">1 menit</strong> untuk menyelesaikan pembayaran</p>
+            <p><strong>Nominal: Rp ${currentAmount.toLocaleString()}</strong></p>
+            
+            <div class="payment-option">
+                <div class="payment-btn" id="paymentDana">
+                    <i class="fab fa-whatsapp" style="font-size:24px;"></i><br>
+                    <strong>DANA</strong><br>
+                    <small>083847045358</small>
+                </div>
+                <div class="payment-btn" id="paymentQris">
+                    <i class="fas fa-qrcode" style="font-size:24px;"></i><br>
+                    <strong>QRIS</strong><br>
+                    <small>Scan & Bayar</small>
+                </div>
+            </div>
+            
+            <div id="paymentDetailArea"></div>
+            <div id="timerDisplay" class="timer"></div>
+            <div id="confirmArea"></div>
+            <button id="btnClosePayment" style="width:100%; margin-top:10px; background:#555;"><i class="fas fa-times"></i> Batalkan Transaksi</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('paymentDana').onclick = () => selectPaymentMethod('dana');
+    document.getElementById('paymentQris').onclick = () => selectPaymentMethod('qris');
+    document.getElementById('btnClosePayment').onclick = closePaymentModal;
+    
+    selectedMethod = null;
+    startPaymentTimer();
+}
+
+function selectPaymentMethod(method) {
+    selectedMethod = method;
+    
+    document.getElementById('paymentDana').classList.remove('selected');
+    document.getElementById('paymentQris').classList.remove('selected');
+    if(method === 'dana') {
+        document.getElementById('paymentDana').classList.add('selected');
+    } else {
+        document.getElementById('paymentQris').classList.add('selected');
+    }
+    
+    let detailArea = document.getElementById('paymentDetailArea');
+    
+    if(method === 'dana') {
+        detailArea.innerHTML = `
+            <div class="payment-detail-box">
+                <i class="fab fa-whatsapp" style="font-size:40px; color:#25D366;"></i>
+                <h4>Transfer ke DANA</h4>
+                <div class="dana-info">
+                    <p><strong>Nomor DANA:</strong> 083847045358</p>
+                    <p><strong>Nama:</strong> ST.AZIZAH</p>
+                    <p><strong>Nominal:</strong> Rp ${currentAmount.toLocaleString()}</p>
+                </div>
+                <p style="margin-top:15px;">✅ Setelah transfer, klik tombol konfirmasi di bawah</p>
+            </div>
+        `;
+    } else {
+        detailArea.innerHTML = `
+            <div class="payment-detail-box">
+                <i class="fas fa-qrcode" style="font-size:40px;"></i>
+                <h4>Scan QRIS</h4>
+                <img src="https://cdn.phototourl.com/free/2026-06-07-9a6d6ffe-f8da-4b47-8eae-8a1805e88839.jpg" class="qris-image" alt="QRIS">
+                <p><strong>Nominal:</strong> Rp ${currentAmount.toLocaleString()}</p>
+                <p style="margin-top:15px;">✅ Scan QRIS menggunakan DANA, OVO, atau aplikasi bank</p>
+            </div>
+        `;
+    }
+    
+    document.getElementById('confirmArea').innerHTML = `
+        <button id="btnConfirmPayment" style="width:100%; background:#28a745;"><i class="fas fa-check-circle"></i> ✅ Sudah Bayar, Konfirmasi Sekarang</button>
+    `;
+    document.getElementById('btnConfirmPayment').onclick = confirmPayment;
+}
+
+function startPaymentTimer() {
+    if(timerIntervalPayment) clearInterval(timerIntervalPayment);
+    timeLeftPayment = 60;
+    document.getElementById('timerDisplay').innerHTML = `⏰ Waktu tersisa: <span style="font-size:2rem;">${timeLeftPayment}</span> detik`;
+    
+    timerIntervalPayment = setInterval(() => {
+        timeLeftPayment--;
+        document.getElementById('timerDisplay').innerHTML = `⏰ Waktu tersisa: <span style="font-size:2rem;">${timeLeftPayment}</span> detik`;
+        
+        if(timeLeftPayment <= 0) {
+            clearInterval(timerIntervalPayment);
+            document.getElementById('timerDisplay').innerHTML = '⏰ Waktu habis! Transaksi dibatalkan.';
+            document.getElementById('confirmArea').innerHTML = '<p style="color:#ff4444;">Waktu pembayaran habis. Silakan ulangi.</p>';
+            selectedMethod = null;
+        }
+    }, 1000);
+}
+
+function confirmPayment() {
+    if(!selectedMethod) {
+        alert('Pilih metode pembayaran terlebih dahulu!');
+        return;
+    }
+    
+    if(timeLeftPayment <= 0) {
+        alert('Waktu pembayaran sudah habis! Silakan ulangi.');
+        closePaymentModal();
+        return;
+    }
+    
+    clearInterval(timerIntervalPayment);
+    
+    let userInfo = userData[currentUser] || {};
+    let orderId = '';
+    
+    if(currentPaymentType === 'topup') {
+        orderId = 'TOPUP-' + Date.now() + '-' + Math.floor(Math.random()*1000);
+        
+        let waMsg = `Halo Admin, saya ${userInfo.nama || currentUser} 
+(WA: ${userInfo.wa || '-'}, Email: ${userInfo.email || '-'}) 
+melakukan TOP UP SALDO sebesar Rp ${currentAmount.toLocaleString()} 
+via ${selectedMethod.toUpperCase()}. 
+Order ID: ${orderId}
+Mohon segera diproses.`;
+        window.open(`https://wa.me/6285178915068?text=${encodeURIComponent(waMsg)}`, '_blank');
+        
+        userBalances[currentUser] = (userBalances[currentUser] || 0) + currentAmount;
+        
+        let topUpTrans = {
+            orderId: orderId,
+            username: currentUser,
+            productName: 'Top Up Saldo',
+            price: currentAmount,
+            status: 'SUCCESS',
+            date: new Date().toLocaleString(),
+            accountDetail: `Top up saldo Rp ${currentAmount.toLocaleString()} via ${selectedMethod.toUpperCase()}`,
+            buyerNama: userInfo.nama || '-',
+            buyerWa: userInfo.wa || '-',
+            buyerEmail: userInfo.email || '-',
+            paymentMethod: selectedMethod.toUpperCase()
+        };
+        transactions.push(topUpTrans);
+        saveAll();
+        
+        showToast(`✅ Top up Rp ${currentAmount.toLocaleString()} berhasil!`);
+        
+    } else if(currentPaymentType === 'beli' && currentProductId) {
+        let product = products.find(p => p.id == currentProductId);
+        if(!product) {
+            showToast('Produk tidak ditemukan!', true);
+            closePaymentModal();
+            return;
+        }
+        
+        if(product.stok <= 0) {
+            showToast('Stok habis!', true);
+            closePaymentModal();
+            return;
+        }
+        
+        if((userBalances[currentUser] || 0) < product.harga) {
+            showToast('Saldo tidak cukup! Silakan top up.', true);
+            closePaymentModal();
+            showPage('topupSaldo');
+            return;
+        }
+        
+        userBalances[currentUser] -= product.harga;
+        product.stok -= 1;
+        
+        orderId = 'ORDER-' + Date.now() + '-' + Math.floor(Math.random()*1000);
+        
+        let newTransaction = {
+            orderId: orderId,
+            username: currentUser,
+            productName: product.nama,
+            price: product.harga,
+            status: 'SUCCESS',
+            date: new Date().toLocaleString(),
+            accountDetail: `Akun ${product.nama} telah dikirim. Hubungi admin untuk detail lengkap.`,
+            buyerNama: userInfo.nama || '-',
+            buyerWa: userInfo.wa || '-',
+            buyerEmail: userInfo.email || '-',
+            paymentMethod: selectedMethod.toUpperCase()
+        };
+        transactions.push(newTransaction);
+        saveAll();
+        
+        let waMsg = `Halo Admin, saya ${userInfo.nama || currentUser} 
+(WA: ${userInfo.wa || '-'}, Email: ${userInfo.email || '-'}) 
+telah membeli ${product.nama} seharga Rp ${product.harga.toLocaleString()} 
+via ${selectedMethod.toUpperCase()}. 
+Order ID: ${orderId}
+Mohon segera kirimkan akunnya.`;
+        window.open(`https://wa.me/6285178915068?text=${encodeURIComponent(waMsg)}`, '_blank');
+        
+        showToast(`✅ Pembelian ${product.nama} berhasil! Order ID: ${orderId}`);
+        renderStokAkun();
+        renderHomeProducts();
+    }
+    
+    saveAll();
+    updateUI();
+    renderPesanan();
+    closePaymentModal();
+}
+
+function closePaymentModal() {
+    let modal = document.getElementById('paymentModal');
+    if(modal) modal.remove();
+    if(timerIntervalPayment) clearInterval(timerIntervalPayment);
+    selectedMethod = null;
+}
+
+// ==================== TOP UP & BELI ====================
+function startTopUp() {
+    if(!currentUser) {
+        showToast('Silakan login terlebih dahulu!', true);
+        return;
+    }
+    
+    let amount = parseInt(document.getElementById('nominalTopup').value);
+    
+    let userInfo = userData[currentUser];
+    if(!userInfo?.nama || !userInfo?.wa || !userInfo?.email) {
+        showDataDiriModal('topup', null, amount);
+    } else {
+        showPaymentModal('topup', null, amount);
+    }
+}
+
+function beliProduk(productId) {
+    if(!currentUser) {
+        showToast('Silakan login terlebih dahulu!', true);
+        return;
+    }
+    
+    let product = products.find(p => p.id == productId);
+    if(!product) {
+        showToast('Produk tidak ditemukan!', true);
+        return;
+    }
+    
+    let userSaldo = userBalances[currentUser] || 0;
+    
+    let modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'paymentChoiceModal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3>💳 Pilih Metode Pembayaran</h3>
+            <p><strong>Produk:</strong> ${product.nama}</p>
+            <p><strong>Harga:</strong> Rp ${product.harga.toLocaleString()}</p>
+            <div class="saldo-info">
+                <i class="fas fa-wallet"></i> Saldo Anda: <strong>Rp ${userSaldo.toLocaleString()}</strong>
+            </div>
+            
+            <div class="payment-option">
+                <div class="payment-btn payment-method-saldo" id="payWithSaldo">
+                    <i class="fas fa-wallet" style="font-size:24px;"></i><br>
+                    <strong>Bayar dengan Saldo</strong><br>
+                    <small>Gunakan saldo website</small>
+                </div>
+                <div class="payment-btn" id="payWithExternal">
+                    <i class="fas fa-credit-card" style="font-size:24px;"></i><br>
+                    <strong>Bayar via DANA/QRIS</strong><br>
+                    <small>Transfer manual</small>
+                </div>
+            </div>
+            <button id="btnClosePaymentChoice" style="width:100%; margin-top:10px; background:#555;"><i class="fas fa-times"></i> Batal</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('payWithSaldo').onclick = () => {
+        closePaymentChoiceModal();
+        beliDenganSaldo(productId);
+    };
+    
+    document.getElementById('payWithExternal').onclick = () => {
+        closePaymentChoiceModal();
+        let userInfo = userData[currentUser];
+        if(!userInfo?.nama || !userInfo?.wa || !userInfo?.email) {
+            showDataDiriModal('beli', productId, 0);
+        } else {
+            showPaymentModal('beli', productId, 0);
+        }
+    };
+    
+    document.getElementById('btnClosePaymentChoice').onclick = closePaymentChoiceModal;
+}
+
+function closePaymentChoiceModal() {
+    let modal = document.getElementById('paymentChoiceModal');
+    if(modal) modal.remove();
+}
+
+// ==================== RENDER FUNCTIONS ====================
+function renderHomeProducts() {
+    let container = document.getElementById('homeProducts');
+    if(!container) return;
+    let showProducts = products.slice(0, 4);
+    if(showProducts.length === 0) {
+        container.innerHTML = '<p>Belum ada produk.</p>';
+        return;
+    }
+    let html = '';
+    showProducts.forEach(p => {
+        html += `
+            <div class="product-card">
+                <img src="${p.gambar}" onerror="this.src='https://via.placeholder.com/200'">
+                <h3>${p.nama}</h3>
+                <p>${p.deskripsi.substring(0, 60)}</p>
+                <div class="price">Rp ${p.harga.toLocaleString()}</div>
+                <div class="stock">Stok: ${p.stok}</div>
+                <button class="btn-buy" data-id="${p.id}">Beli Sekarang</button>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+    
+    document.querySelectorAll('#homeProducts .btn-buy').forEach(btn => {
+        btn.onclick = () => beliProduk(parseInt(btn.getAttribute('data-id')));
+    });
+}
+
+function renderStokAkun() {
+    let container = document.getElementById('stokAkunGrid');
+    if(!container) return;
+    if(products.length === 0) {
+        container.innerHTML = '<p>Stok akun kosong.</p>';
+        return;
+    }
+    let html = '';
+    products.forEach(p => {
+        html += `
+            <div class="product-card">
+                <img src="${p.gambar}" onerror="this.src='https://via.placeholder.com/200'">
+                <h3>${p.nama}</h3>
+                <p>${p.deskripsi}</p>
+                <div class="price">Rp ${p.harga.toLocaleString()}</div>
+                <div class="stock">Tersisa: ${p.stok}</div>
+                <button class="btn-buy-stok" data-id="${p.id}">Beli</button>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
+    
+    document.querySelectorAll('#stokAkunGrid .btn-buy-stok').forEach(btn => {
+        btn.onclick = () => beliProduk(parseInt(btn.getAttribute('data-id')));
+    });
+}
+
+function renderPesanan() {
+    let container = document.getElementById('pesananList');
+    if(!container) return;
+    let userOrders = transactions.filter(t => t.username === currentUser);
+    if(userOrders.length === 0) {
+        container.innerHTML = '<p>Belum ada pesanan.</p>';
+        return;
+    }
+    let html = '';
+    userOrders.forEach(o => {
+        html += `<div style="background:#1e2268; padding:15px; margin-bottom:10px; border-radius:10px;">
+                    <strong>${o.orderId}</strong><br>
+                    ${o.productName} - Rp ${o.price.toLocaleString()}<br>
+                    Status: ${o.status} | ${o.date}<br>
+                    <small>Metode: ${o.paymentMethod || 'SALDO'}</small>
+                </div>`;
+    });
+    container.innerHTML = html;
+}
+
+function cekTransaksi() {
+    let orderId = document.getElementById('cekOrderId').value;
+    let trans = transactions.find(t => t.orderId === orderId);
+    let hasilDiv = document.getElementById('hasilCekTransaksi');
+    if(trans) {
+        hasilDiv.innerHTML = `<div style="background:#1e2268; padding:15px; border-radius:10px;">
+                                <strong>✅ Order ID:</strong> ${trans.orderId}<br>
+                                <strong>Produk:</strong> ${trans.productName}<br>
+                                <strong>Harga:</strong> Rp ${trans.price.toLocaleString()}<br>
+                                <strong>Status:</strong> ${trans.status}<br>
+                                <strong>Metode:</strong> ${trans.paymentMethod || 'SALDO'}<br>
+                                <strong>Tanggal:</strong> ${trans.date}
+                              </div>`;
+    } else {
+        hasilDiv.innerHTML = '<p style="color:red;">❌ Transaksi tidak ditemukan.</p>';
+    }
+}
+
+function kirimTestimoni() {
+    if(!currentUser) {
+        showToast('Login untuk memberi testimoni!', true);
+        return;
+    }
+    let rating = parseInt(document.getElementById('ratingTesti').value);
+    let message = document.getElementById('pesanTesti').value;
+    if(!message) {
+        alert('Tulis pesan testimoni!');
+        return;
+    }
+    let newTesti = {
+        username: currentUser,
+        rating: rating,
+        message: message,
+        date: new Date().toLocaleString(),
+        reply: null
+    };
+    testimonials.push(newTesti);
+    saveAll();
+    showToast('Terima kasih atas testimoni Anda!');
+    document.getElementById('pesanTesti').value = '';
+    renderTestimoni();
+}
+
+function renderTestimoni() {
+    let container = document.getElementById('testimoniTampilan');
+    if(!container) return;
+    if(testimonials.length === 0) {
+        container.innerHTML = '<p>Belum ada testimoni.</p>';
+        return;
+    }
+    let html = '';
+    testimonials.slice().reverse().forEach(t => {
+        html += `<div style="background:#1e2268; padding:15px; border-radius:10px; margin-bottom:10px;">
+                    <strong>⭐ ${t.rating} ★ - ${t.username}</strong><br>
+                    "${t.message}"<br>
+                    <small>${t.date}</small>
+                    ${t.reply ? `<div style="margin-top:10px; padding:10px; background:#0a0e27; border-radius:8px;"><strong>Balasan Admin:</strong> ${t.reply}</div>` : ''}
+                </div>`;
+    });
+    container.innerHTML = html;
+}
+
+// ==================== PAGE NAVIGATION ====================
+function showPage(pageId) {
+    document.querySelectorAll('.page-store').forEach(page => {
+        page.classList.remove('active-page');
+    });
+    document.getElementById(pageId).classList.add('active-page');
+    
+    if(pageId === 'beranda') renderHomeProducts();
+    if(pageId === 'stokAkun') renderStokAkun();
+    if(pageId === 'pesanan') renderPesanan();
+    if(pageId === 'profil') updateUI();
+    if(pageId === 'testimoni') renderTestimoni();
+    
+    document.getElementById('sidebarRight').classList.remove('active');
+    document.getElementById('overlayRight').classList.remove('active');
+}
+
+// ==================== EVENT LISTENERS ====================
+document.getElementById('menuToggleRight').onclick = () => {
+    document.getElementById('sidebarRight').classList.toggle('active');
+    document.getElementById('overlayRight').classList.toggle('active');
+};
+document.getElementById('overlayRight').onclick = () => {
+    document.getElementById('sidebarRight').classList.remove('active');
+    document.getElementById('overlayRight').classList.remove('active');
+};
+
+document.getElementById('btnLogin').onclick = loginOrRegister;
+document.getElementById('btnLogout').onclick = logout;
+document.getElementById('btnTopUp').onclick = startTopUp;
+document.getElementById('btnCekTransaksi').onclick = cekTransaksi;
+document.getElementById('btnKirimTestimoni').onclick = kirimTestimoni;
+
+// ==================== INITIAL LOAD ====================
+updateUI();
+renderHomeProducts();
+renderStokAkun();
+renderPesanan();
+renderTestimoni();
+</script>
+</body>
+</html>
